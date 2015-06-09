@@ -49,18 +49,52 @@ function adblock_save_post_type($post_id) {
 //Registers the Product's post type
 function adblock_create_post_type() {
 
-    register_post_type( 'adblocklist',
+$labels = array(
+    'name' => _x('adblocklist', 'post type general name'),
+    'singular_name' => _x('adblocklist', 'post type singular name'),
+    'add_new' => _x('Add New', 'adblocklist'),
+    'add_new_item' => __('Add new Adblocklist'),
+    'edit_item' => __('Edit Adblocklist'),
+    'new_item' => __('New Adblocklist'),
+    'view_item' => __('View Adblocklist'),
+    'search_items' => __('Search Adblocklists'),
+    'not_found' =>  __('No List found'),
+    'not_found_in_trash' => __('No lists found in Trash'),
+    'parent_item_colon' => ''
+  );
+    $args = array(
+    'labels' => $labels,
+    'public' => true,
+    'publicly_queryable' => true,
+    'show_ui' => true,
+    'query_var' => true,
+    'rewrite' => true,
+    'capability_type' => 'post',
+    'hierarchical' => false,
+    'menu_position' => null,
+    'taxonomies' => array( 'types','features'),
+    'menu_position'=>5,
+    'supports' => array('title','editor', 'author'),
+    'rewrite' => array('slug' => 'products'),
+    'register_meta_box_cb' => 'add_events_metaboxes',
+    );
+
+    register_post_type( "adblocklist", $args);
+
+/*,
         array(
             'labels' => array(
                 'name' => __( 'AdBlockList' ),
                 'singular_name' => __( 'AdBlockList' )
             ),
         'public' => true,
-        'has_archive' => false,
-        'supports' => array( 'title', 'author', 'editor'  ),
- 	'register_meta_box_cb' => 'add_events_metaboxes'
+        'has_archive' => true,
+        'supports' => array( 'title', 'author', 'editor', 'shortlinks'  ),
+ 	'register_meta_box_cb' => 'add_events_metaboxes',
+	'rewrite' => array('slug'=>'','with_front'=>false),
         )
     );
+*/
 }
 
 function add_events_metaboxes() {

@@ -74,9 +74,9 @@ $labels = array(
     'capability_type' => 'post',
     'hierarchical' => false,
     'menu_position' => null,
-    'taxonomies' => array( 'category', 'types','features' ,'tags' ),
+    'taxonomies' => array( 'category' ),
     'menu_position'=>5,
-    'supports' => array('title','editor', 'author' ),
+    'supports' => array('title','editGor', 'author' ),
     'rewrite' => array('slug' => 'adblocklist'),
     'register_meta_box_cb' => 'add_events_metaboxes',
     );
@@ -298,7 +298,7 @@ function my_the_content_filter( $content ) {
     foreach($possibilities as $row=>$item) {
 	array_push($list, $item[0]);
     }
-    $content .= sprintf('<![CDATA[%s]]', join(',', $list));
+    $content .= sprintf('<![CDATA[%s]]>', join(',', $list));
     } // End IF Statementi
 
     // Returns the content.
@@ -309,7 +309,7 @@ function my_the_content_filter( $content ) {
 add_filter( 'pre_get_posts', 'my_get_posts' );
 
 function my_get_posts( $query ) {
-    if ( ( is_category() && $query->is_main_query() ) || is_home() && is_main_query() || is_feed() )
+    if ( ( is_category() && $query->is_main_query() ) || is_feed() )
         $query->set( 'post_type', array( 'post', 'postadblock' ) );
 
     return $query;

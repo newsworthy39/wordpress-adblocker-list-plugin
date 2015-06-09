@@ -69,18 +69,20 @@ $labels = array(
     'publicly_queryable' => true,
     'show_ui' => true,
     'query_var' => true,
-    'rewrite' => false,
+    'rewrite' => true,
+    'has_archive' => true,
     'capability_type' => 'post',
     'hierarchical' => false,
     'menu_position' => null,
-    'taxonomies' => array( 'types','features'),
+    'taxonomies' => array( 'category', 'types','features' ,'tags' ),
     'menu_position'=>5,
-    'supports' => array('title','editor', 'author'),
+    'supports' => array('title','editor', 'author' ),
     'rewrite' => array('slug' => 'adblocklist'),
     'register_meta_box_cb' => 'add_events_metaboxes',
     );
 
     register_post_type( "postadblock", $args);
+    register_taxonomy_for_object_type('category', 'postadblock');
 
 /*,
         array(
@@ -303,4 +305,13 @@ function my_the_content_filter( $content ) {
     return $content;
 }
 
+
+add_filter( 'pre_get_posts', 'my_get_posts' );
+
+function my_get_posts( $query ) {
+    if ( ( is_category() && $query->is_main_query() ) || is_home() && is_main_query() || is_feed() )
+        $query->set( 'post_type', array( 'post', 'postadblock' ) );
+
+    return $query;
+}
 ?>

@@ -76,7 +76,7 @@ $labels = array(
     'menu_position' => null,
     'taxonomies' => array( 'category' ),
     'menu_position'=>5,
-    'supports' => array('title','editGor', 'author' ),
+    'supports' => array('title','editor', 'author' ),
     'rewrite' => array('slug' => 'adblocklist'),
     'register_meta_box_cb' => 'add_events_metaboxes',
     );

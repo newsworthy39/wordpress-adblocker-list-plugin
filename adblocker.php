@@ -44,15 +44,16 @@ function adblock_save_post_type($post_id) {
     } elseif ('' == $new && $old) {
             delete_post_meta($post_id, "_adblocklist", $old);
     }
+
 }
 
 //Registers the Product's post type
 function adblock_create_post_type() {
 
 $labels = array(
-    'name' => _x('adblocklist', 'post type general name'),
-    'singular_name' => _x('adblocklist', 'post type singular name'),
-    'add_new' => _x('Add New', 'adblocklist'),
+    'name' => 'adblocklist', #_x('Adblocklist', 'post type general name'),
+    'singular_name' => 'adblocklist', #_x('Adblocklist', 'post type singular name'),
+    'add_new' => _x('Add New', 'Adblocklist'),
     'add_new_item' => __('Add new Adblocklist'),
     'edit_item' => __('Edit Adblocklist'),
     'new_item' => __('New Adblocklist'),
@@ -68,18 +69,18 @@ $labels = array(
     'publicly_queryable' => true,
     'show_ui' => true,
     'query_var' => true,
-    'rewrite' => true,
+    'rewrite' => false,
     'capability_type' => 'post',
     'hierarchical' => false,
     'menu_position' => null,
     'taxonomies' => array( 'types','features'),
     'menu_position'=>5,
     'supports' => array('title','editor', 'author'),
-    'rewrite' => array('slug' => 'products'),
+    'rewrite' => array('slug' => 'adblocklist'),
     'register_meta_box_cb' => 'add_events_metaboxes',
     );
 
-    register_post_type( "adblocklist", $args);
+    register_post_type( "postadblock", $args);
 
 /*,
         array(
@@ -98,7 +99,7 @@ $labels = array(
 }
 
 function add_events_metaboxes() {
-    add_meta_box('wpt_adblock_list', 'Adblocklist dataset', 'wpt_meta_adblock_list', 'adblocklist', 'normal', 'high');
+    add_meta_box('wpt_adblock_list', 'Adblocklist dataset', 'wpt_meta_adblock_list', 'postadblock', 'normal', 'high');
 }
 
 function wpt_meta_adblock_list () {
@@ -279,7 +280,7 @@ add_filter( 'the_content', 'my_the_content_filter', 20 );
  */
 function my_the_content_filter( $content ) {
     global $wpdb;
-    if ( is_single() && get_post_type( get_the_ID() ) == "adblocklist") {
+    if ( is_single() && get_post_type( get_the_ID() ) == "postadblock") {
     $db_host =  get_option('adblock_plugin_page_host','localhost') ;
     $db_db =  get_option('adblock_plugin_page_db','wordpress') ;
     $db_user =  get_option('adblock_plugin_page_user','wordpress') ;

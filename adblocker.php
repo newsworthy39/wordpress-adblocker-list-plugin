@@ -282,17 +282,21 @@ add_filter( 'the_content', 'my_the_content_filter', 20 );
  */
 function my_the_content_filter( $content ) {
     global $wpdb;
-    if ( is_single() && get_post_type( get_the_ID() ) == "postadblock") {
+    $post_id = get_the_ID();
+
+    if ( is_single() && get_post_type( $post_id ) == "postadblock") {
     $db_host =  get_option('adblock_plugin_page_host','localhost') ;
     $db_db =  get_option('adblock_plugin_page_db','wordpress') ;
     $db_user =  get_option('adblock_plugin_page_user','wordpress') ;
     $db_passwd =  get_option('adblock_plugin_page_password','wordpress') ;
+    $listname = get_post_meta($post_id, "_adblocklist", true);
 
     $wpdb_local = new wpdb($db_user, $db_passwd, $db_db, $db_host);
     $wpdb_local->prefix = $wpdb->prefix;
     $table_name = $wpdb->prefix . 'adblocklist_data';
     $charset_collate = $wpdb->get_charset_collate();
-    $possibilities   = $wpdb_local->get_results("select content from $table_name", "ARRAY_N");
+    
+    $possibilities   = $wpdb_local->get_results("select content from $table_name where frid = (select id from wp_adblocklist where datasetname = '$listname')", "ARRAY_N");
 
     $list = array();
     foreach($possibilities as $row=>$item) {
